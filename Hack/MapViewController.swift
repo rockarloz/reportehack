@@ -12,8 +12,7 @@ import QuartzCore
 import MapKit
 
 class MapViewController: UIViewController,MKMapViewDelegate, CLLocationManagerDelegate {
-    var data: NSDictionary! = nil
-    let containerMap = UIView ()
+        let containerMap = UIView ()
     let btncloseMap = UIButton(type: .custom)
     let mapViewFS =  MKMapView()
     let screenSize : CGRect = UIScreen.main.bounds
@@ -25,20 +24,20 @@ class MapViewController: UIViewController,MKMapViewDelegate, CLLocationManagerDe
         let locationManager = CLLocationManager()
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCumtombar()
+       
         
         
         //added map
-        mapViewFS.frame = CGRect(x: 0,y: 64, width: screenSize.width,height: screenSize.height-64)
+        mapViewFS.frame = CGRect(x: 0,y: 0, width: screenSize.width,height: screenSize.height-0)
         mapViewFS.mapType = MKMapType.standard
         mapViewFS.isZoomEnabled = true
         mapViewFS.isScrollEnabled = true
         mapViewFS.showsUserLocation = true
         mapViewFS.delegate = self
         self.view.addSubview(mapViewFS)
+         setupCumtombar()
         
-        
-        let markerLocation = CLLocationCoordinate2DMake(data.object(forKey: "latitude") as! Double, data.object(forKey: "longitude")as! Double)
+        let markerLocation = CLLocationCoordinate2DMake(19.4227361 , -99.1383308)
         // Drop a pin
         let dropPin = MKPointAnnotation()
         dropPin.coordinate = markerLocation
@@ -61,7 +60,7 @@ class MapViewController: UIViewController,MKMapViewDelegate, CLLocationManagerDe
         btnLocation.layer.cornerRadius = 4
         btnLocation.clipsToBounds = true
         btnLocation.addTarget(self, action: #selector(MapViewController.showUser(_:)), for: .touchUpInside)
-        self.view.addSubview(btnLocation)
+       // self.view.addSubview(btnLocation)
 }
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
@@ -84,9 +83,9 @@ class MapViewController: UIViewController,MKMapViewDelegate, CLLocationManagerDe
         }
       
         
-        let auxTypeD =  data.object(forKey: "type") as! NSDictionary
+     
         
-        let url = URL(string: ((auxTypeD.object(forKey: "image"))! as! String))
+        let url = URL(string: "https://img.clipartfest.com/6ef7a9a7c8ac1791bf395d1eb7c9a792_download-this-image-as-map-pin-clipart_354-592.png")
 
         DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
             let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check
@@ -105,30 +104,30 @@ class MapViewController: UIViewController,MKMapViewDelegate, CLLocationManagerDe
      
         
         customBar.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 64)
-        customBar.backgroundColor = Colors.green
-        self.view.addSubview(customBar)
+        customBar.backgroundColor = .clear
+        self.view.addSubview(mapViewFS)
         
-        UIElements.setGradient(customBar, c1: Colors.greentop , c2: Colors.greenbottom)
+        //UIElements.setGradient(customBar, c1: Colors.greentop , c2: Colors.greenbottom)
         
         
         btnclose.frame = CGRect(x: 0, y: 20, width: 44, height: 44)
-        btnclose.setImage(UIImage(named: "icArrowBack.png"), for: UIControlState())
+        btnclose.setImage(UIImage(named: "icClear.png"), for: UIControlState())
         btnclose.backgroundColor = UIColor.clear
         btnclose.setTitleColor(UIColor.white, for: UIControlState())
         
         btnclose.clipsToBounds = true
         btnclose.addTarget(self, action: #selector(MapViewController.close(_:)), for: .touchUpInside)
-        self.customBar.addSubview(btnclose)
+        mapViewFS.addSubview(btnclose)
         
         
       
          lblTitle.frame = CGRect(x: 0, y: 32, width: self.view.frame.size.width, height: 22)
         lblTitle.text = "UBICACIÓN"
         lblTitle.textAlignment = .center
-        lblTitle.font = Fonts.MR16
+        //lblTitle.font = Fonts.MR16
         
         lblTitle.textColor = UIColor.white
-        self.customBar.addSubview(lblTitle)
+       // self.customBar.addSubview(lblTitle)
         
     }
     
