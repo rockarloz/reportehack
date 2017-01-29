@@ -8,18 +8,55 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class ViewController: UIViewController,UITableViewDataSource, UITableViewDelegate {
+    var table: UITableView  =   UITableView()
+    
+    let panel = UIImageView ()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        panel.frame = CGRect( x: 0, y: 0, width: self.view.frame.size.width  , height: self.view.frame.size.width * 0.8)
+        panel.image = UIImage(named: "panel.png")
+        panel.backgroundColor = .clear
+        
+        self.view.addSubview(panel)
+        table.delegate      =   self
+        table.dataSource    =   self
+        table.rowHeight     = 110
+        table.register(StoryTableViewCell.self, forCellReuseIdentifier: "cell")
+        table.backgroundColor =  UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+        
+        table.separatorStyle = UITableViewCellSeparatorStyle.none
+        //borrar
+        table.frame         =   CGRect(x: 0, y: self.view.frame.size.width * 0.8, width: self.view.frame.size.width, height: self.view.frame.size.height - (self.view.frame.size.width * 0.8));
+        self.view.addSubview(table)
+        
+        }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+        
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell:StoryTableViewCell?
+        // let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! StoryTableViewCell
+        
+            cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? StoryTableViewCell
+        cell?.useData()
+        cell?.ImageA.image = UIImage(named: "venueItem" + String (indexPath.row + 1) + ".png")
+
+        
+            cell?.selectionStyle = UITableViewCellSelectionStyle.none
+               return cell!
     }
 
-
-}
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        self.present(ProfileViewController(), animated: true, completion: nil)
+    }
+    
+              }
 
